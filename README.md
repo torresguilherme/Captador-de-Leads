@@ -72,3 +72,11 @@ Selecione o "Spreadsheet ID" (ID da Planilha) e o "Sheet Name" (Nome da Aba).
 Mapeie os campos dos nós anteriores para as colunas correspondentes da sua planilha.
 
 Ative o Workflow: Salve as alterações e ative o fluxo no botão superior.
+
+
+<img width="1478" height="538" alt="captador de leads foto 1" src="https://github.com/user-attachments/assets/e7c81c55-7acd-4e86-8ae0-2f840a452b0c" />
+<img width="710" height="946" alt="captador de leads foto 2" src="https://github.com/user-attachments/assets/2bd8207f-0f24-435e-935b-5e903edba420" />
+<img width="1896" height="534" alt="captador de leads foto 3" src="https://github.com/user-attachments/assets/e827f714-11e3-4516-a0fa-10bdecf4b855" />
+
+
+
