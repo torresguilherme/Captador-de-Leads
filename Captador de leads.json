@@ -1,0 +1,321 @@
+{
+  "name": "Captador de leads",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": " Captador de Leads - Apify",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Nicho",
+              "placeholder": "ex: arquiteto, corretor, clínica de estética...",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Localização",
+              "placeholder": "ex: São Paulo, Fortaleza...",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false,
+          "buttonLabel": "Buscar Leads",
+          "ignoreBots": true,
+          "customCss": ":root {\n\t--font-family: 'Open Sans', sans-serif;\n\t--font-weight-normal: 400;\n\t--font-weight-bold: 600;\n\t--font-size-body: 12px;\n\t--font-size-label: 14px;\n\t--font-size-test-notice: 12px;\n\t--font-size-input: 14px;\n\t--font-size-header: 20px;\n\t--font-size-paragraph: 14px;\n\t--font-size-link: 12px;\n\t--font-size-error: 12px;\n\t--font-size-html-h1: 28px;\n\t--font-size-html-h2: 20px;\n\t--font-size-html-h3: 16px;\n\t--font-size-html-h4: 14px;\n\t--font-size-html-h5: 12px;\n\t--font-size-html-h6: 10px;\n\t--font-size-subheader: 14px;\n\n\t/* Colors (amarelo personalizado) */\n\t--color-background: #fffbea;\n\t--color-test-notice-text: #b37400;\n\t--color-test-notice-bg: #fff4cc;\n\t--color-test-notice-border: #ffe8a1;\n\t--color-card-bg: #fff9d6;\n\t--color-card-border: #f5d76e;\n\t--color-card-shadow: rgba(255, 215, 0, 0.15);\n\t--color-link: #b38600;\n\t--color-header: #5c4a00;\n\t--color-label: #665200;\n\t--color-input-border: #f5d76e;\n\t--color-input-text: #5a4a00;\n\t--color-focus-border: #ffd700;\n\t--color-submit-btn-bg: #ffc107;\n\t--color-submit-btn-text: #1a1a1a;\n\t--color-error: #d9534f;\n\t--color-required: #ffc107;\n\t--color-clear-button-bg: #b38600;\n\t--color-html-text: #4a3900;\n\t--color-html-link: #e6ac00;\n\t--color-header-subtext: #8c7400;\n\n\t/* Border Radii */\n\t--border-radius-card: 8px;\n\t--border-radius-input: 6px;\n\t--border-radius-clear-btn: 50%;\n\t--card-border-radius: 8px;\n\n\t/* Spacing */\n\t--padding-container-top: 24px;\n\t--padding-card: 24px;\n\t--padding-test-notice-vertical: 12px;\n\t--padding-test-notice-horizontal: 24px;\n\t--margin-bottom-card: 16px;\n\t--padding-form-input: 12px;\n\t--card-padding: 24px;\n\t--card-margin-bottom: 16px;\n\n\t/* Dimensions */\n\t--container-width: 448px;\n\t--submit-btn-height: 48px;\n\t--checkbox-size: 18px;\n\n\t/* Others */\n\t--box-shadow-card: 0px 4px 16px 0px var(--color-card-shadow);\n\t--opacity-placeholder: 0.5;\n}"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -1568,
+        176
+      ],
+      "id": "3353767d-58d5-4198-9b72-ebe26191f303",
+      "name": "On form submission",
+      "webhookId": "6df0fc17-5c51-44b7-8870-6e96d0b37882"
+    },
+    {
+      "parameters": {
+        "url": "https://api.apify.com/v2/acts/compass~google-maps-extractor/run-sync-get-dataset-items?SUA_CHAVE,
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"city\": \"{{ $json.city }}\",\n    \"countryCode\": \"br\",\n    \"language\": \"pt-BR\",\n    \"locationQuery\": \"{{ $json.city }}\",\n    \"maxCrawledPlacesPerSearch\": 30,\n    \"searchStringsArray\": [\n        \"{{ $json.niche }}\"\n    ],\n    \"skipClosedPlaces\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1152,
+        176
+      ],
+      "id": "0bf4c669-5a70-4607-9549-483857d5b38d",
+      "name": "Buscar Apify"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4a9f2f22-0cb8-4525-8cc4-ba3c00a49642",
+              "name": "niche",
+              "value": "={{ $('On form submission').item.json.Nicho }}",
+              "type": "string"
+            },
+            {
+              "id": "e4d03d10-1eaa-4357-bb1b-aa620dcdb1ac",
+              "name": "city",
+              "value": "={{ $('On form submission').item.json[\"Localização\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "d78b18e5-f0d1-447f-95c2-c47069d49837",
+              "name": "aba",
+              "value": "={{ $('On form submission').item.json[\"Seu nome\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1360,
+        176
+      ],
+      "id": "99d207b6-ae53-40dd-a4d5-51381ad02a6c",
+      "name": "Dados"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1-vlWutm9dq7aXM0bajpaUaMHLBuQOv4cxqQuCmSVY1A",
+          "mode": "list",
+          "cachedResultName": "leeds",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-vlWutm9dq7aXM0bajpaUaMHLBuQOv4cxqQuCmSVY1A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-vlWutm9dq7aXM0bajpaUaMHLBuQOv4cxqQuCmSVY1A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Hora da Busca",
+              "displayName": "Hora da Busca",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Categoria",
+              "displayName": "Categoria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Local",
+              "displayName": "Local",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Bairro",
+              "displayName": "Bairro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Url",
+              "displayName": "Url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -752,
+        176
+      ],
+      "id": "fef2a553-ec1d-4896-9343-25e55e34258a",
+      "name": "Gravar",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "iFz7qTgm6B8zyhun",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3ac78f5a-df33-470a-b4aa-19e6cb7f2d02",
+              "name": "Hora da Busca",
+              "value": "={{ $('On form submission').item.json.submittedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "436c76eb-e531-41e7-a80e-a293ef7501d4",
+              "name": "Nome",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "d47ffa41-8906-4fbc-afa2-fae4ffd50be0",
+              "name": "Categoria",
+              "value": "={{ $json.categoryName }}",
+              "type": "string"
+            },
+            {
+              "id": "2b146ba6-c958-4b00-90b1-a49126e6c6e9",
+              "name": "Local",
+              "value": "={{ $json.address }}",
+              "type": "string"
+            },
+            {
+              "id": "5a03247e-3dcc-486a-8558-24abdd8cbcea",
+              "name": "Bairro",
+              "value": "={{ $json.neighborhood }}",
+              "type": "string"
+            },
+            {
+              "id": "dd68572c-7f0d-49d9-91ba-0039c8c7c846",
+              "name": "Telefone",
+              "value": "={{ $json.phone.replace('+','') }}",
+              "type": "string"
+            },
+            {
+              "id": "dd07d14a-f00c-4198-9b25-5789e7661b4f",
+              "name": "Url",
+              "value": "={{ $json.url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -960,
+        176
+      ],
+      "id": "db542c27-d87d-4464-bd69-17c77d2d35db",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados": {
+      "main": [
+        [
+          {
+            "node": "Buscar Apify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Apify": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Gravar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f0864f2a-bd92-45ab-b441-b307807d3132",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bee7877d59471bef06ae66bc161cd22b2af901127665b1c022db8c83f56b09f3"
+  },
+  "id": "FHkPz3tbXVT1trMD",
+  "tags": []
+}
